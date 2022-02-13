@@ -15,13 +15,58 @@ public class angry1 {
 		for (int i : hays) {
 			System.out.println(i);
 		}
+		System.out.println("______________");
+		List<Integer> hayss = new ArrayList<Integer>(hays);
+		int largest = 0;
+		for (int i = 0; i < hays.size(); i++) {
+			int curr = checkExplosions(hayss, i);
+			if (curr > largest) {
+				largest = curr;
+			}
+			System.out.println("i:" + i + "curr: " + curr);
+		}
+		System.out.println("largest:" + largest);
 		
 	}
-	static int Explosions = 0;
-	static int ExplosionRadius = 0;
-	public static int checkExplosions(TreeSet<Integer> hay, int CowStart) {
-		
-		return Explosions;
+	
+	
+	static int ExplosionRadius = 1;
+	public static int checkExplosions(List<Integer> hays, int CowStart) {
+		// go to cowstart, check +- Explosion radius.
+		int[] applicable = new int[ExplosionRadius*2];
+		int Explosions = 0;
+		if (CowStart-1 >= 0) {
+			if (Math.abs(hays.get(CowStart-1) - hays.get(CowStart)) == 1) {
+				Explosions++;
+				Explosions = Explosions + checkNext(hays, CowStart-1, 2);
+			}
+		}
+		if (CowStart+1 < hays.size()) {
+			if (Math.abs(hays.get(CowStart+1) - hays.get(CowStart)) == 1) {
+				Explosions++;
+				Explosions = Explosions + checkNext(hays, CowStart+1, 2);
+			}
+			
+		}
+		return Explosions; 
+	}
+	public static int checkNext(List<Integer> hay, int CowStart, int currExR) {
+		int Explosions = 0;
+		List<Integer>  hays = new ArrayList<Integer>(hay);
+		if (CowStart-currExR >= 0) {
+			if (Math.abs(hays.get(CowStart-1) - hays.get(CowStart)) == 1) {
+				Explosions++;
+				Explosions = Explosions + checkNext(hays, CowStart-1, currExR+1);
+			}
+		}
+		if (CowStart+currExR < hays.size()) {
+			if (Math.abs(hays.get(CowStart+1) - hays.get(CowStart)) == 1) {
+				Explosions++;
+				Explosions = Explosions + checkNext(hays, CowStart+1, currExR+1);
+			}
+			
+		}
+		return Explosions; 
 	}
 
 }
